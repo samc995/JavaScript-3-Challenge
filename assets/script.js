@@ -3,7 +3,7 @@
 var generateBtn = document.querySelector("#generate");
 
 function generatePassword() {
-var passwordText = []
+  var passwordText = ""
 
 
   var specialCharacters = ["!", "@", "#", "$", "%", "^", "&", "*", "()", "`", "-", "=", "+"]
@@ -25,35 +25,42 @@ var passwordText = []
 
 
 
-  var passwordLength = Number(prompt("Between 8 and 128, how many characters would you like your password to be?"))
+  var passwordLength = parseInt(prompt("Between 8 and 128, how many characters would you like your password to be?"))
+  if (passwordLength < 8 || passwordLength > 128 || isNaN(passwordLength)) {
+alert("Please enter a number between 8 and 128!");
+    return null
+  }
   var useLower = confirm("Include lowercase letters?");
   var useUpper = confirm("Include uppercase letters?");
   var useSpecial = confirm("Include special characters?");
   var useNumber = confirm("Include numbers?");
 
-  while (passwordLength <= 8 || passwordLength >= 128 || isNaN(passwordLength)) {
-    Number(prompt("Password must be between 8 and 128 characters!"))
+  if (!useLower && !useUpper && !useSpecial && !useNumber) {
+    alert("Must pick one type of character!")
+    return null
+    
   }
-while (passwordText.length <= passwordLength) {
-  if (useLower) {
-    passwordText += getRandChar(lowerLetter)
+  
+  while (passwordText.length < passwordLength) {
+    if (useLower && passwordText.length < passwordLength ) {
+      passwordText += getRandChar(lowerLetter);
+    }
+
+    if (useUpper && passwordText.length < passwordLength) {
+      passwordText += getRandChar(upperLetter);
+    }
+
+
+    if (useSpecial && passwordText.length < passwordLength) {
+      passwordText += getRandChar(specialCharacters);
+    }
+
+    if (useNumber && passwordText.length < passwordLength) {
+      passwordText += getRandChar(number);
+
+    }
   }
-
-  if (useUpper) {
-    passwordText += getRandChar(upperLetter);
-  }
-
-
-  if (useSpecial) {
-    passwordText += getRandChar(specialCharacters);
-  }
-
-  if (useNumber) {
-    passwordText += getRandChar(number);
-
-  }
-}
-return passwordText;
+  return passwordText;
 
 }
 
@@ -88,9 +95,8 @@ var generateBtn = document.querySelector("#generate");
 
 
 
-
-
 generateBtn.addEventListener("click", writePassword);
+
 
 
 // Add event listener to generate button
